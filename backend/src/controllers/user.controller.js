@@ -1069,8 +1069,12 @@ const getAllScanHistory = asyncHandler(async (req, res) => {
       limit = 10,
     } = req.query;
 
-    page = parseInt(page);
-    limit = parseInt(limit);
+    page = Number.parseInt(page, 10);
+    limit = Number.parseInt(limit, 10);
+    if (Number.isNaN(page) || page < 1) page = 1;
+    if (Number.isNaN(limit) || limit < 1) limit = 10;
+    if (limit > 100) limit = 100;
+
     const offset = (page - 1) * limit;
 
     // base query
@@ -1113,10 +1117,10 @@ const getAllScanHistory = asyncHandler(async (req, res) => {
     const dataQuery = `
             SELECT * ${baseQuery}
             ORDER BY url ASC
-            LIMIT ? OFFSET ?
+        LIMIT ${limit} OFFSET ${offset}
         `;
 
-    const scans = await db.prepare(dataQuery).all(...params, limit, offset);
+    const scans = await db.prepare(dataQuery).all(...params);
 
     const result = {};
 

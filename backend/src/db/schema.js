@@ -9,7 +9,7 @@ export async function createSchema() {
       userId VARCHAR(255),
       urls LONGTEXT, 
       strategy TEXT,
-      status TEXT DEFAULT 'running',
+      status VARCHAR(20) DEFAULT 'running',
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
       updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
       ) ENGINE=InnoDB`);
@@ -23,7 +23,7 @@ export async function createSchema() {
       userId VARCHAR(255),
       url TEXT NOT NULL,
       deviceType TEXT NOT NULL,
-      status TEXT DEFAULT 'pending',
+      status VARCHAR(20) DEFAULT 'pending',
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (batchId) REFERENCES batch(id) ON DELETE CASCADE
     )
